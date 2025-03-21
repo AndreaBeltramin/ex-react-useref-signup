@@ -16,7 +16,8 @@ function App() {
 	const isUsernameValid =
 		username.length >= 6 && /^[a-zA-Z0-9]+$/.test(username);
 	const isPasswordValid =
-		password.length >= 8 && /^[a-zA-Z0-9]+$/.test(password);
+		password.length >= 8 &&
+		/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/.test(password);
 	const isDescrizioneValid =
 		descrizione.trim().length >= 100 && descrizione.trim().length <= 1000;
 	const handleChange = (e) => {
@@ -90,7 +91,7 @@ function App() {
 						<p style={{ color: isPasswordValid ? "green" : "red" }}>
 							{isPasswordValid
 								? "Password valida"
-								: "Deve contenere 6 caratteri e non può contenere simboli"}
+								: "Deve contenere almeno 8 caratteri, 1 lettera, 1 numero e 1 simbolo"}
 						</p>
 					)}
 				</div>
