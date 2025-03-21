@@ -20,10 +20,6 @@ function App() {
 		/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/.test(password);
 	const isDescrizioneValid =
 		descrizione.trim().length >= 100 && descrizione.trim().length <= 1000;
-	const handleChange = (e) => {
-		const option = e.target.value;
-		setSpecializzazione(option);
-	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -34,12 +30,12 @@ function App() {
 		}
 
 		console.log("Valori inseriti:", {
-			nome: name,
-			username: username,
-			password: password,
-			specializzazione: specializzazione,
-			anni: anni,
-			breve_descrizione: descrizione,
+			nome,
+			username,
+			password,
+			specializzazione,
+			anni,
+			descrizione,
 		});
 	};
 
@@ -102,7 +98,9 @@ function App() {
 					<select
 						required
 						value={specializzazione}
-						onChange={handleChange}
+						onChange={(e) => {
+							setSpecializzazione(e.target.value);
+						}}
 						id="specializzazione"
 					>
 						<option value="">-- Seleziona-- </option>
