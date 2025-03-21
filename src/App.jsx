@@ -17,6 +17,11 @@ function App() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
+		if (anni < 0) {
+			alert("Inserisci un valore positivo");
+			return;
+		}
+
 		console.log("Valori inseriti:", {
 			nome: name,
 			username: username,
@@ -70,6 +75,7 @@ function App() {
 						Seleziona la tua specializzazione:{" "}
 					</label>
 					<select
+						required
 						value={specializzazione}
 						onChange={handleChange}
 						id="specializzazione"
