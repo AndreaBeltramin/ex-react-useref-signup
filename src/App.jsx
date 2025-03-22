@@ -17,9 +17,10 @@ function App() {
 
 	const nameRef = useRef();
 
+	// al posto di fare lo split per ottenere i caratteri singoli possiamo fare lo spread [...username]
 	const isUsernameValid = useMemo(() => {
 		const charsValid =
-			username.length >= 6 &&
+			username.trim().length >= 6 &&
 			username
 				.toLowerCase()
 				.split("")
@@ -33,7 +34,7 @@ function App() {
 
 	const isPasswordValid = useMemo(() => {
 		return (
-			password.length >= 8 &&
+			password.trim().length >= 8 &&
 			password
 				.toLowerCase()
 				.split("")
@@ -60,6 +61,10 @@ function App() {
 
 		if (anni < 0) {
 			alert("Inserisci un valore positivo");
+			return;
+		}
+		if (!isUsernameValid || !isPasswordValid || !isDescrizioneValid) {
+			alert("Inserisci un valore corretto per proseguire");
 			return;
 		}
 
@@ -171,7 +176,9 @@ function App() {
 						<p style={{ color: isDescrizioneValid ? "green" : "red" }}>
 							{isDescrizioneValid
 								? "Descrizione valida"
-								: "Deve contenere più di 100 caratteri ma meno di 1000"}
+								: `Deve contenere tra 100 e 1000 caratteri (
+										${descrizione.trim().length}
+								  )`}
 						</p>
 					)}
 				</div>
