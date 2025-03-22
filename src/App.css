@@ -5,3 +5,7 @@
 .input {
 	margin-top: 20px;
 }
+.textarea {
+	width: 500px;
+	height: 100px;
+}

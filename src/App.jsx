@@ -1,25 +1,59 @@
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import "./App.css";
 
+const letters = "abcdefghijklmnopqrstuvwxyz";
+const numbers = "0123456789";
+const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~";
+
 function App() {
-	const letters = "abcdefghijklmnopqrstuvwxyz";
-	const numbers = "0123456789";
-	const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~";
+	const [name, setName] = useState("Andrea");
+	const [username, setUsername] = useState("Andre99");
+	const [password, setPassword] = useState("Password1@");
+	const [specializzazione, setSpecializzazione] = useState("Front-end");
+	const [anni, setAnni] = useState("1");
+	const [descrizione, setDescrizione] = useState(
+		"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Expedita architecto tenetur eveniet nostrum, tempora, velit officia explicabo, nesciunt sed reprehenderit facilis. Magnam velit modi eius minima numquam quia dolorem vero!"
+	);
 
-	const [name, setName] = useState("");
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [specializzazione, setSpecializzazione] = useState("");
-	const [anni, setAnni] = useState("");
-	const [descrizione, setDescrizione] = useState("");
+	const nameRef = useRef();
 
-	const isUsernameValid =
-		username.length >= 6 && /^[a-zA-Z0-9]+$/.test(username);
-	const isPasswordValid =
-		password.length >= 8 &&
-		/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/.test(password);
-	const isDescrizioneValid =
-		descrizione.trim().length >= 100 && descrizione.trim().length <= 1000;
+	const isUsernameValid = useMemo(() => {
+		const charsValid =
+			username.length >= 6 &&
+			username
+				.toLowerCase()
+				.split("")
+				.every((char) => letters.includes(char) || numbers.includes(char)) &&
+			username
+				.toLowerCase()
+				.split("")
+				.every((char) => !symbols.includes(char));
+		return charsValid;
+	}, [username]);
+
+	const isPasswordValid = useMemo(() => {
+		return (
+			password.length >= 8 &&
+			password
+				.toLowerCase()
+				.split("")
+				.some((char) => letters.includes(char)) &&
+			password
+				.toLowerCase()
+				.split("")
+				.some((char) => numbers.includes(char)) &&
+			password
+				.toLowerCase()
+				.split("")
+				.some((char) => symbols.includes(char))
+		);
+	}, [password]);
+
+	const isDescrizioneValid = useMemo(() => {
+		return (
+			descrizione.trim().length >= 100 && descrizione.trim().length <= 1000
+		);
+	}, [descrizione]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -30,7 +64,7 @@ function App() {
 		}
 
 		console.log("Valori inseriti:", {
-			nome,
+			name,
 			username,
 			password,
 			specializzazione,
@@ -49,9 +83,9 @@ function App() {
 						required
 						type="text"
 						id="nome"
-						value={name}
+						ref={nameRef}
 						placeholder="Inserisci il tuo nome"
-						onChange={(e) => setName(e.target.value)}
+						onChange={(e) => setName(nameRef.current.value)}
 					/>
 				</div>
 				<div className="input">
@@ -104,7 +138,7 @@ function App() {
 						id="specializzazione"
 					>
 						<option value="">-- Seleziona-- </option>
-						<option value="Fornt-end">Front-end</option>
+						<option value="Front-end">Front-end</option>
 						<option value="Back-end">Back-end</option>
 						<option value="Full-stack">Full-stack</option>
 					</select>
@@ -125,6 +159,7 @@ function App() {
 				<div className="input">
 					<label htmlFor="descrizione">Breve descrizione: </label>
 					<textarea
+						className="textarea"
 						required
 						type="textarea"
 						id="descrizione"
