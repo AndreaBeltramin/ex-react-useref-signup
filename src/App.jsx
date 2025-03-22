@@ -6,16 +6,15 @@ const numbers = "0123456789";
 const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~";
 
 function App() {
-	const [name, setName] = useState("Andrea");
 	const [username, setUsername] = useState("Andre99");
 	const [password, setPassword] = useState("Password1@");
-	const [specializzazione, setSpecializzazione] = useState("Front-end");
-	const [anni, setAnni] = useState("1");
 	const [descrizione, setDescrizione] = useState(
 		"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Expedita architecto tenetur eveniet nostrum, tempora, velit officia explicabo, nesciunt sed reprehenderit facilis. Magnam velit modi eius minima numquam quia dolorem vero!"
 	);
 
 	const nameRef = useRef();
+	const specializzazioneRef = useRef();
+	const anniRef = useRef();
 
 	// al posto di fare lo split per ottenere i caratteri singoli possiamo fare lo spread [...username]
 	const isUsernameValid = useMemo(() => {
@@ -59,7 +58,7 @@ function App() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		if (anni < 0) {
+		if (anniRef.current.value < 0) {
 			alert("Inserisci un valore positivo");
 			return;
 		}
@@ -69,11 +68,11 @@ function App() {
 		}
 
 		console.log("Valori inseriti:", {
-			name,
+			name: nameRef.current.value,
 			username,
 			password,
-			specializzazione,
-			anni,
+			specializzazione: specializzazioneRef.current.value,
+			anni: anniRef.current.value,
 			descrizione,
 		});
 	};
@@ -90,7 +89,6 @@ function App() {
 						id="nome"
 						ref={nameRef}
 						placeholder="Inserisci il tuo nome"
-						onChange={(e) => setName(nameRef.current.value)}
 					/>
 				</div>
 				<div className="input">
@@ -134,14 +132,7 @@ function App() {
 					<label htmlFor="specializzazione">
 						Seleziona la tua specializzazione:{" "}
 					</label>
-					<select
-						required
-						value={specializzazione}
-						onChange={(e) => {
-							setSpecializzazione(e.target.value);
-						}}
-						id="specializzazione"
-					>
+					<select required ref={specializzazioneRef} id="specializzazione">
 						<option value="">-- Seleziona-- </option>
 						<option value="Front-end">Front-end</option>
 						<option value="Back-end">Back-end</option>
@@ -155,9 +146,8 @@ function App() {
 						required
 						type="number"
 						id="esperienza"
-						value={anni}
+						ref={anniRef}
 						placeholder="Inserisci i tuoi anni di esperienza"
-						onChange={(e) => setAnni(e.target.value)}
 					/>
 				</div>
 
